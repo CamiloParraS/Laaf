@@ -1,9 +1,15 @@
 {
   "scripts": {
-    "start": "node index.ts",
-    "dev": "ts-node-dev index.ts"
+    "start": "tsx index.ts",
+    "dev": "tsx watch index.ts",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "fastify": "^5.12.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
   }
 }

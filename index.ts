@@ -6,8 +6,8 @@ app.get("/", async (request, reply) => {
   return { hello: "world" };
 });
 
-app.get("/admins", async (req, res) => {
-  return { admins : ["Juan Diego", "Juan Camilo", "Jefer"]}
+app.get("/devs", async (req, res) => {
+  return { devs : ["Juan Diego", "Juan Camilo", "Jefer"]}
 })
 
 app.listen({ port: 5000 }, (err, address) => {
