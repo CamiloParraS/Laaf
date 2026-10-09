@@ -1,0 +1,90 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  TEACHER
+  CORDINATOR
+  DIRECTOR
+}
+
+model Institution {
+  id    String @id @default(uuid())
+  name  String @unique
+
+  users User[]
+  areas Area[]
+}
+
+model Area {
+  id            String @id @default(uuid())
+  name          String @unique
+
+  institutionId String
+  institution   Institution @relation(fields: [institutionId], references: [id])
+
+  areaLeaderId  String?    // opcional: un área puede no tener líder aún
+  areaLeader    User?      @relation("AreaLeader", fields: [areaLeaderId], references: [id])
+
+  users         User[]     @relation("AreaMembers")
+}
+
+model User {
+  id          String   @id @default(uuid())
+  name        String
+  lastname    String
+  email       String   @unique
+  password    String
+  last_login  DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  role        Role
+
+  institutionId String
+  institution   Institution @relation(fields: [institutionId], references: [id])
+
+  areaId String
+  area   Area   @relation("AreaMembers", fields: [areaId], references: [id])
+
+  // Áreas que este usuario lidera (lado inverso de Area.areaLeader)
+  ledAreas Area[] @relation("AreaLeader")
+
+  templates TemplateMetadata[]
+  documents DocumentMetadata[]
+}
+
+model TemplateMetadata {
+  id        String   @id @default(uuid())
+  name      String
+  subject   String
+  status    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ownerId String
+  owner   User   @relation(fields: [ownerId], references: [id])
+
+  documents DocumentMetadata[]
+}
+
+model DocumentMetadata {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ownerId    String
+  owner      User             @relation(fields: [ownerId], references: [id])
+
+  templateId String
+  template   TemplateMetadata @relation(fields: [templateId], references: [id])
+}
