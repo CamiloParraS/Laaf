@@ -9,6 +9,7 @@ import { InstitutionModule } from './institution/institution.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    InstitutionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
