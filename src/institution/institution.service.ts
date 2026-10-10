@@ -6,11 +6,11 @@ import { Institution } from '../generated/prisma/client';
 export class InstitutionService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll(): Promise<Institution[]> {
-    return await this.prisma.institution.findMany();
+  findAll(): Promise<Institution[]> {
+    return this.prisma.institution.findMany();
   }
 
-  async findOne(id: string): Promise<Institution | null> {
+  findOne(id: string): Promise<Institution | null> {
     return this.prisma.institution.findUnique({
       where: { id },
     });
