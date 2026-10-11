@@ -10,7 +10,7 @@ export class LoginDto {
   password: string;
 }
 
-export class RegisterDto extends LoginDto {
+export class RegisterDto {
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -18,6 +18,13 @@ export class RegisterDto extends LoginDto {
   @IsString()
   @IsNotEmpty()
   lastname: string;
+
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  @MinLength(8)
+  password: string;
 
   @IsEnum(Role)
   role: Role;
