@@ -3,73 +3,62 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Prisma } from '../generated/prisma/client.js';
-import { PrismaService } from '../prisma.service';
+import { randomUUID } from 'node:crypto';
 import { CreateInstitutionDto, UpdateInstitutionDto } from './institution.dto';
+import { Institution } from './institution.model';
 
 @Injectable()
 export class InstitutionsService {
-  constructor(private readonly prisma: PrismaService) {}
+  // POC: in-memory, lost on restart. Replace with Prisma later.
+  private institutions: Institution[] = [];
 
-  findAll() {
-    return this.prisma.institution.findMany();
+  findAll(): Institution[] {
+    return this.institutions;
   }
 
-  async findById(id: string) {
-    const data = await this.prisma.institution.findUnique({
-      where: { id },
-    });
-    if (!data) {
+  findById(id: string): Institution {
+    const data = this.institutions.find((institution) => institution.id === id);
+    if (data === undefined) {
       throw new NotFoundException(`Institución con ID ${id} no encontrada`);
     }
+    return data;
+  }
 
-    return {
-      message: 'Institución encontrada',
-      data,
+  create(dto: CreateInstitutionDto): Institution {
+    if (
+      this.institutions.some((institution) => institution.name === dto.name)
+    ) {
+      throw new ConflictException(
+        `Institución con nombre ${dto.name} ya existe`,
+      );
+    }
+    const institution: Institution = {
+      id: randomUUID(),
+      name: dto.name,
     };
+    this.institutions.push(institution);
+    return institution;
   }
 
-  async create(institutionPayload: CreateInstitutionDto) {
-    try {
-      const data = await this.prisma.institution.create({
-        data: institutionPayload,
-      });
-      return { data };
-    } catch (error) {
-      if (
-        error instanceof Prisma.PrismaClientKnownRequestError &&
-        error.code === 'P2002'
-      ) {
-        throw new ConflictException(
-          `Institución con nombre ${institutionPayload.name} ya existe`,
-        );
-      }
-      throw error;
+  update(id: string, dto: UpdateInstitutionDto): Institution {
+    const position = this.institutions.findIndex(
+      (institution) => institution.id === id,
+    );
+    if (position === -1) {
+      throw new NotFoundException(`Institución con ID ${id} no encontrada`);
     }
-  }
-
-  async update(id: string, institutionChanges: UpdateInstitutionDto) {
-    try {
-      const data = await this.prisma.institution.update({
-        where: { id },
-        data: institutionChanges,
-      });
-      return {
-        message: 'Institución actualizada con éxito',
-        data,
-      };
-    } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        if (error.code === 'P2025') {
-          throw new NotFoundException(`Institución con ID ${id} no encontrada`);
-        }
-        if (error.code === 'P2002') {
-          throw new ConflictException(
-            `Institución con nombre ${institutionChanges.name} ya existe`,
-          );
-        }
-      }
-      throw error;
+    if (
+      dto.name !== undefined &&
+      this.institutions.some(
+        (institution) => institution.name === dto.name && institution.id !== id,
+      )
+    ) {
+      throw new ConflictException(
+        `Institución con nombre ${dto.name} ya existe`,
+      );
     }
+    const updated = { ...this.institutions[position], ...dto };
+    this.institutions[position] = updated;
+    return updated;
   }
 }
