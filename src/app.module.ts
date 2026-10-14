@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
 import { AuthController } from './auth/auth.controller';
+import { AreasModule } from './areas/areas.module';
 import { InstitutionsModule } from './institutions/institutions.module';
 
 @Module({
@@ -12,6 +13,7 @@ import { InstitutionsModule } from './institutions/institutions.module';
       isGlobal: true,
     }),
     InstitutionsModule,
+    AreasModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService],
