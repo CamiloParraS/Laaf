@@ -5,6 +5,8 @@ import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
 import { AuthController } from './auth/auth.controller';
 import { InstitutionsModule } from './institutions/institutions.module';
+import { MetadataTemplatesController } from './metadata-templates/metadata-templates.controller';
+import { MetadataTemplatesService } from './metadata-templates/metadata-templates.service';
 
 @Module({
   imports: [
@@ -13,7 +15,7 @@ import { InstitutionsModule } from './institutions/institutions.module';
     }),
     InstitutionsModule,
   ],
-  controllers: [AppController, AuthController],
-  providers: [AppService, AuthService],
+  controllers: [AppController, AuthController, MetadataTemplatesController],
+  providers: [AppService, AuthService, MetadataTemplatesService],
 })
 export class AppModule {}
