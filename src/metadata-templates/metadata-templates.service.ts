@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 import {
+  CreateMetadataTemplateDto,
   MetadataTemplatePage,
   MetadataTemplateResponse,
   UpdateMetadataTemplateDto,
@@ -37,6 +38,21 @@ export class MetadataTemplatesService {
   findById(id: string): MetadataTemplateResponse {
     const template = this.templates.find((t) => t.id === id);
     if (!template) throw new NotFoundException('Metadata template not found');
+    return template;
+  }
+
+  create(dto: CreateMetadataTemplateDto): MetadataTemplateResponse {
+    const now = new Date().toISOString();
+    const template: MetadataTemplateResponse = {
+      id: randomUUID(),
+      name: dto.name,
+      subject: dto.subject,
+      status: dto.status ?? true,
+      createdAt: now,
+      updatedAt: now,
+      ownerId: dto.ownerId,
+    };
+    this.templates.push(template);
     return template;
   }
 

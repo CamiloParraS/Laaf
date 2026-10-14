@@ -8,10 +8,14 @@ import {
   Param,
   ParseIntPipe,
   Patch,
+  Post,
   Query,
 } from '@nestjs/common';
 import { MetadataTemplatesService } from './metadata-templates.service';
-import { UpdateMetadataTemplateDto } from './metadata-templates.dto';
+import {
+  CreateMetadataTemplateDto,
+  UpdateMetadataTemplateDto,
+} from './metadata-templates.dto';
 import type {
   MetadataTemplatePage,
   MetadataTemplateResponse,
@@ -32,6 +36,11 @@ export class MetadataTemplatesController {
   @Get(':id')
   findById(@Param('id') id: string): MetadataTemplateResponse {
     return this.templates.findById(id);
+  }
+
+  @Post()
+  create(@Body() payload: CreateMetadataTemplateDto): MetadataTemplateResponse {
+    return this.templates.create(payload);
   }
 
   @Patch(':id')

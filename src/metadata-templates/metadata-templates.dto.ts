@@ -1,4 +1,21 @@
-import { IsString, MinLength } from 'class-validator';
+import { IsBoolean, IsOptional, IsString, IsUUID, MinLength } from 'class-validator';
+
+export class CreateMetadataTemplateDto {
+  @IsString()
+  @MinLength(4)
+  name: string;
+
+  @IsString()
+  @MinLength(5)
+  subject: string;
+
+  @IsOptional()
+  @IsBoolean()
+  status?: boolean;
+
+  @IsUUID()
+  ownerId: string;
+}
 
 export class UpdateMetadataTemplateDto {
   @IsString()
