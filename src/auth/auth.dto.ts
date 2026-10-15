@@ -1,5 +1,10 @@
 import { IsEmail, IsEnum, IsNotEmpty, IsString, IsUUID, MinLength } from 'class-validator';
-import { Role } from '../generated/prisma/enums.js';
+
+export enum Role {
+  TEACHER = 'TEACHER',
+  CORDINATOR = 'CORDINATOR',
+  DIRECTOR = 'DIRECTOR',
+}
 
 export class LoginDto {
   @IsEmail()
@@ -41,9 +46,9 @@ export interface AuthResponse {
   name: string;
   lastname: string;
   email: string;
-  last_login: string;
-  createdAt: string;
-  updatedAt: string;
+  last_login: Date;
+  createdAt: Date;
+  updatedAt: Date;
   role: Role;
   institutionId: string;
   areaId: string;
