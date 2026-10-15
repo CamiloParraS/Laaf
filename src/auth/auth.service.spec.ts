@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DataSource } from 'typeorm';
 import { AuthService } from './auth.service';
@@ -7,7 +8,7 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AuthService, { provide: DataSource, useValue: { query: jest.fn() } }],
+      providers: [AuthService, { provide: DataSource, useValue: { query: vi.fn() } }],
     }).compile();
 
     service = module.get<AuthService>(AuthService);

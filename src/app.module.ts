@@ -3,6 +3,7 @@ import { AuthModule } from './auth/auth.module';
 import { DatabaseModule } from './database/database.module';
 import { EnvModule } from './env/env.module';
 import { InstitutionsModule } from './institutions/institutions.module';
+import { MetadataDocumentsModule } from './metadata-documents/metadata-documents.module';
 import { MetadataTemplatesModule } from './metadata-templates/metadata-templates.module';
 
 @Module({
@@ -12,6 +13,7 @@ import { MetadataTemplatesModule } from './metadata-templates/metadata-templates
     AuthModule,
     InstitutionsModule,
     MetadataTemplatesModule,
+    MetadataDocumentsModule,
   ],
 })
 export class AppModule {}
