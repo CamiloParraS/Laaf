@@ -13,12 +13,9 @@ export class PublishDocumentDto {
   id: string;
 }
 
-// export class SaveDocumentDto {
-//   @IsUUID()
-//   id: string;
-//
-//   @IsOptional()
-//   @IsString()
-//   @MinLength(1)
-//   content?: string;
-// }
+export class SaveDocumentDto {
+  @IsOptional()
+  @IsString()
+  @MinLength(1)
+  content?: string;
+}

@@ -5,9 +5,14 @@ import {
   Options,
   Param,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
-import { CloneDocumentDto, PublishDocumentDto } from './metadata-documents.dto';
+import {
+  CloneDocumentDto,
+  PublishDocumentDto,
+  SaveDocumentDto,
+} from './metadata-documents.dto';
 import type { document } from './metadata-documents.model';
 import { MetadataDocumentsService } from './metadata-documents.service';
 
@@ -17,7 +22,7 @@ export class DocumentsController {
 
   @Options('documents')
   optionsDocuments(): string {
-    return 'OK';
+    return 'Doro was Here, doro or something';
   }
 
   @Get('document/:id')
@@ -26,8 +31,7 @@ export class DocumentsController {
   }
 
   @Get('documents')
-  getDocumentsByOwner(
-@Query('owner_id') ownerId: string): document[] {
+  getDocumentsByOwner(@Query('owner_id') ownerId: string): document[] {
     return this.documents.findAllByOwner(ownerId);
   }
 
@@ -41,8 +45,11 @@ export class DocumentsController {
     return this.documents.publish(payload);
   }
 
-  // @Post('document/save')
-  // saveDocument(@Body() payload: SaveDocumentDto): document {
-  //   return this.documents.save(payload);
-  // }
+  @Put('document/:id')
+  saveDocument(
+    @Param('id') id: string,
+    @Body() payload: SaveDocumentDto,
+  ): document {
+    return this.documents.save(id, payload);
+  }
 }

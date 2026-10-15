@@ -1,6 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
-import { CloneDocumentDto, PublishDocumentDto } from './metadata-documents.dto';
+import {
+  CloneDocumentDto,
+  PublishDocumentDto,
+  SaveDocumentDto,
+} from './metadata-documents.dto';
 import { document } from './metadata-documents.model';
 
 @Injectable()
@@ -37,9 +41,9 @@ export class MetadataDocumentsService {
     return doc;
   }
 
-  // save(dto: SaveDocumentDto): document {
-  //   const doc = this.findById(dto.id);
-  //   doc.last_update = new Date().toISOString();
-  //   return doc;
-  // }
+  save(id: string, dto: SaveDocumentDto): document {
+    const doc = this.findById(id);
+    doc.last_update = new Date().toISOString();
+    return doc;
+  }
 }
