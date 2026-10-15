@@ -6,7 +6,7 @@ describe('AuthController', () => {
   it('should be defined', async () => {
     const module = await Test.createTestingModule({
       controllers: [AuthController],
-      providers: [AuthService],
+      providers: [{ provide: AuthService, useValue: {} }],
     }).compile();
     expect(module.get(AuthController)).toBeDefined();
   });
