@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
 import { AuthController } from './auth/auth.controller';
 import { InstitutionsModule } from './institutions/institutions.module';
+import { MetadataDocumentsModule } from './metadata-documents/metadata-documents.module';
 import { MetadataTemplatesController } from './metadata-templates/metadata-templates.controller';
 import { MetadataTemplatesService } from './metadata-templates/metadata-templates.service';
 
@@ -14,6 +15,7 @@ import { MetadataTemplatesService } from './metadata-templates/metadata-template
       isGlobal: true,
     }),
     InstitutionsModule,
+    MetadataDocumentsModule,
   ],
   controllers: [AppController, AuthController, MetadataTemplatesController],
   providers: [AppService, AuthService, MetadataTemplatesService],
