@@ -4,6 +4,7 @@ import {
   Get,
   Options,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
   Query,
@@ -13,7 +14,7 @@ import {
   PublishDocumentDto,
   SaveDocumentDto,
 } from './metadata-documents.dto';
-import type { document } from './metadata-documents.model';
+import { DocumentMetadata } from './entities/document-metadata.entity';
 import { MetadataDocumentsService } from './metadata-documents.service';
 
 @Controller()
@@ -26,30 +27,36 @@ export class DocumentsController {
   }
 
   @Get('document/:id')
-  getDocumentById(@Param('id') id: string): document {
+  getDocumentById(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<DocumentMetadata> {
     return this.documents.findById(id);
   }
 
   @Get('documents')
-  getDocumentsByOwner(@Query('owner_id') ownerId: string): document[] {
+  getDocumentsByOwner(
+    @Query('owner_id', ParseUUIDPipe) ownerId: string,
+  ): Promise<DocumentMetadata[]> {
     return this.documents.findAllByOwner(ownerId);
   }
 
   @Post('document/clone')
-  cloneDocument(@Body() payload: CloneDocumentDto): document {
+  cloneDocument(@Body() payload: CloneDocumentDto): Promise<DocumentMetadata> {
     return this.documents.clone(payload);
   }
 
   @Post('document/publish')
-  publishDocument(@Body() payload: PublishDocumentDto): document {
+  publishDocument(
+    @Body() payload: PublishDocumentDto,
+  ): Promise<DocumentMetadata> {
     return this.documents.publish(payload);
   }
 
   @Put('document/:id')
   saveDocument(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() payload: SaveDocumentDto,
-  ): document {
+  ): Promise<DocumentMetadata> {
     return this.documents.save(id, payload);
   }
 }

@@ -1,49 +1,53 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { randomUUID } from 'node:crypto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import {
   CloneDocumentDto,
   PublishDocumentDto,
   SaveDocumentDto,
 } from './metadata-documents.dto';
-import { document } from './metadata-documents.model';
+import { DocumentMetadata } from './entities/document-metadata.entity';
 
 @Injectable()
 export class MetadataDocumentsService {
-  private documents: document[] = [];
+  constructor(
+    @InjectRepository(DocumentMetadata)
+    private readonly documentsRepository: Repository<DocumentMetadata>,
+  ) {}
 
-  findAllByOwner(ownerId: string): document[] {
-    return this.documents.filter((doc) => doc.owner_id === ownerId);
+  findAllByOwner(ownerId: string): Promise<DocumentMetadata[]> {
+    return this.documentsRepository.find({
+      where: { ownerId },
+      order: { updatedAt: 'DESC' },
+    });
   }
 
-  findById(id: string): document {
-    const found = this.documents.find((doc) => doc.id === id);
+  async findById(id: string): Promise<DocumentMetadata> {
+    const found = await this.documentsRepository.findOne({ where: { id } });
     if (!found)
       throw new NotFoundException(`Documento con ID ${id} no encontrado`);
     return found;
   }
 
-  clone(dto: CloneDocumentDto): document {
-    const now = new Date().toISOString();
-    const created: document = {
-      id: randomUUID(),
-      owner_id: dto.owner_id,
-      template_id: dto.template_id,
-      date_cloned: now,
-      last_update: now,
-    };
-    this.documents.push(created);
-    return created;
+  async clone(dto: CloneDocumentDto): Promise<DocumentMetadata> {
+    const created = this.documentsRepository.create({
+      ownerId: dto.owner_id,
+      templateId: dto.template_id,
+    });
+    return this.documentsRepository.save(created);
   }
 
-  publish(dto: PublishDocumentDto): document {
-    const doc = this.findById(dto.id);
-    doc.last_update = new Date().toISOString();
-    return doc;
+  async publish(dto: PublishDocumentDto): Promise<DocumentMetadata> {
+    const doc = await this.findById(dto.id);
+    await this.documentsRepository.update(doc.id, {}); // touch last_update
+    return { ...doc, updatedAt: new Date() };
   }
 
-  save(id: string, dto: SaveDocumentDto): document {
-    const doc = this.findById(id);
-    doc.last_update = new Date().toISOString();
-    return doc;
+  async save(id: string, dto: SaveDocumentDto): Promise<DocumentMetadata> {
+    const doc = await this.findById(id);
+    await this.documentsRepository.update(doc.id, {
+      content: dto.content ?? undefined,
+    });
+    return this.findById(id);
   }
 }
