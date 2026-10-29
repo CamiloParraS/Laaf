@@ -5,56 +5,81 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { randomBytes, scryptSync, timingSafeEqual } from 'node:crypto';
-import { DataSource } from 'typeorm';
-import { AuthResponse, LoginDto, RegisterDto } from './auth.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { LoginDto, RegisterDto } from './auth.dto';
+import { User } from './entities/user.entity';
 
-const COLUMNS = `"id", "name", "lastname", "email", "last_login", "createdAt", "updatedAt", "role", "institutionId", "areaId"`;
-
-const derive = (password: string, salt: string) =>
-  scryptSync(password, salt, 64).toString('hex');
-
-const hash = (password: string) => {
+const hashPassword = (password: string) => {
   const salt = randomBytes(16).toString('hex');
-  return `${salt}:${derive(password, salt)}`;
+  return `${salt}:${scryptSync(password, salt, 64).toString('hex')}`;
 };
 
-const matches = (password: string, stored: string) => {
+const comparePassword = (password: string, stored: string) => {
   const [salt, key] = stored.split(':');
-  return timingSafeEqual(Buffer.from(derive(password, salt), 'hex'), Buffer.from(key, 'hex'));
+  if (!salt || !key) return false;
+  return timingSafeEqual(
+    scryptSync(password, salt, 64),
+    Buffer.from(key, 'hex'),
+  );
 };
+
+const publicData = (user: User) => ({
+  id: user.id,
+  email: user.email,
+  role: user.role,
+  institutionId: user.institutionId,
+  areaId: user.areaId,
+  lastLogin: user.lastLogin,
+  createdAt: user.createdAt,
+  updatedAt: user.updatedAt,
+});
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly db: DataSource) {}
+  constructor(
+    @InjectRepository(User)
+    private readonly users: Repository<User>,
+  ) {}
 
-  async register(dto: RegisterDto): Promise<AuthResponse> {
+  async register(dto: RegisterDto) {
+    const email = dto.email.toLowerCase();
+
+    const existing = await this.users.findOneBy({ email });
+    if (existing) throw new ConflictException('Email already registered');
+
+    const user = this.users.create({
+      name: dto.name,
+      lastname: dto.lastname,
+      email,
+      password: hashPassword(dto.password),
+      lastLogin: new Date(),
+      role: dto.role,
+      institutionId: dto.institutionId,
+      areaId: dto.areaId,
+    });
+
     try {
-      const [user] = await this.db.query<AuthResponse[]>(
-        `INSERT INTO "User" ("name", "lastname", "email", "password", "role", "institutionId", "areaId")
-         VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING ${COLUMNS}`,
-        [dto.name, dto.lastname, dto.email.toLowerCase(), hash(dto.password), dto.role, dto.institutionId, dto.areaId],
-      );
-      return user;
-    } catch (e) {
-      const code = (e as { driverError?: { code?: string } }).driverError?.code;
-      if (code === '23505') throw new ConflictException('Email already registered');
-      if (code === '23503') throw new BadRequestException('Unknown institution or area');
-      throw e;
+      const saved = await this.users.save(user);
+      return { status: 201, data: publicData(saved) };
+    } catch {
+      throw new BadRequestException('Error registering user');
     }
   }
 
-  async login(dto: LoginDto): Promise<AuthResponse> {
-    const [row] = await this.db.query<(AuthResponse & { password: string })[]>(
-      `SELECT ${COLUMNS}, "password" FROM "User" WHERE "email" = $1`,
-      [dto.email.toLowerCase()],
-    );
-    if (!row || !matches(dto.password, row.password)) {
+  async login(dto: LoginDto) {
+    const user = await this.users
+      .createQueryBuilder('user')
+      .addSelect('user.password')
+      .where('user.email = :email', { email: dto.email.toLowerCase() })
+      .getOne();
+
+    if (!user || !comparePassword(dto.password, user.password)) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    const [user] = await this.db.query<AuthResponse[]>(
-      `UPDATE "User" SET "last_login" = now(), "updatedAt" = now() WHERE "id" = $1 RETURNING ${COLUMNS}`,
-      [row.id],
-    );
-    return user;
+
+    user.lastLogin = new Date();
+    const saved = await this.users.save(user);
+    return { status: 200, data: publicData(saved) };
   }
 }
