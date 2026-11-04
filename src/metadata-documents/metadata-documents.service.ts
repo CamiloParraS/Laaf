@@ -39,8 +39,10 @@ export class MetadataDocumentsService {
 
   async publish(dto: PublishDocumentDto): Promise<DocumentMetadata> {
     const doc = await this.findById(dto.id);
-    await this.documentsRepository.update(doc.id, {}); // touch last_update
-    return { ...doc, updatedAt: new Date() };
+    await this.documentsRepository.update(doc.id, {
+      updatedAt: new Date(),
+    });
+    return this.findById(doc.id);
   }
 
   async save(id: string, dto: SaveDocumentDto): Promise<DocumentMetadata> {

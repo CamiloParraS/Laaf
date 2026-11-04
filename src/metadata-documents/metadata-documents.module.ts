@@ -8,5 +8,6 @@ import { DocumentMetadata } from './entities/document-metadata.entity';
   imports: [TypeOrmModule.forFeature([DocumentMetadata])],
   controllers: [DocumentsController],
   providers: [MetadataDocumentsService],
+  exports: [MetadataDocumentsService],
 })
 export class MetadataDocumentsModule {}
