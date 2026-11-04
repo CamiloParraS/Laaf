@@ -1,14 +1,27 @@
 import { beforeEach, vi } from 'vitest';
 import { Test, TestingModule } from '@nestjs/testing';
-import { DataSource } from 'typeorm';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Institution } from './entities/institution.entity';
 import { InstitutionsService } from './institutions.service';
 
-describe('AuthService', () => {
+describe('InstitutionsService', () => {
   let service: InstitutionsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [InstitutionsService, { provide: DataSource, useValue: { query: vi.fn() } }],
+      providers: [
+        InstitutionsService,
+        {
+          provide: getRepositoryToken(Institution),
+          useValue: {
+            find: vi.fn(),
+            findOne: vi.fn(),
+            create: vi.fn(),
+            save: vi.fn(),
+            update: vi.fn(),
+          },
+        },
+      ],
     }).compile();
 
     service = module.get<InstitutionsService>(InstitutionsService);
