@@ -1,4 +1,11 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsString, IsUUID, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsString,
+  IsUUID,
+  MinLength,
+} from 'class-validator';
 
 export enum Role {
   TEACHER = 'TEACHER',
@@ -38,18 +45,5 @@ export class RegisterDto {
   institutionId: string;
 
   @IsUUID()
-  areaId: string;
-}
-
-export interface AuthResponse {
-  id: string;
-  name: string;
-  lastname: string;
-  email: string;
-  last_login: Date;
-  createdAt: Date;
-  updatedAt: Date;
-  role: Role;
-  institutionId: string;
   areaId: string;
 }
