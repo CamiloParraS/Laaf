@@ -3,62 +3,62 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { randomUUID } from 'node:crypto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { QueryFailedError, Repository } from 'typeorm';
 import { CreateInstitutionDto, UpdateInstitutionDto } from './institution.dto';
-import { Institution } from './institution.model';
+import { Institution } from './entities/institution.entity';
 
 @Injectable()
 export class InstitutionsService {
-  // POC: in-memory, lost on restart. Replace with Prisma later.
-  private institutions: Institution[] = [];
+  constructor(
+    @InjectRepository(Institution)
+    private readonly institutionsRepository: Repository<Institution>,
+  ) {}
 
-  findAll(): Institution[] {
-    return this.institutions;
+  findAll(): Promise<Institution[]> {
+    return this.institutionsRepository.find({ order: { name: 'ASC' } });
   }
 
-  findById(id: string): Institution {
-    const data = this.institutions.find((institution) => institution.id === id);
-    if (data === undefined) {
+  async findById(id: string): Promise<Institution> {
+    const found = await this.institutionsRepository.findOne({ where: { id } });
+    if (!found) {
       throw new NotFoundException(`Institución con ID ${id} no encontrada`);
     }
-    return data;
+    return found;
   }
 
-  create(dto: CreateInstitutionDto): Institution {
-    if (
-      this.institutions.some((institution) => institution.name === dto.name)
-    ) {
-      throw new ConflictException(
-        `Institución con nombre ${dto.name} ya existe`,
+  async create(dto: CreateInstitutionDto): Promise<Institution> {
+    try {
+      return await this.institutionsRepository.save(
+        this.institutionsRepository.create({ name: dto.name }),
       );
+    } catch (error) {
+      if (error instanceof QueryFailedError && isUniqueViolation(error)) {
+        throw new ConflictException(
+          `Institución con nombre ${dto.name} ya existe`,
+        );
+      }
+      throw error;
     }
-    const institution: Institution = {
-      id: randomUUID(),
-      name: dto.name,
-    };
-    this.institutions.push(institution);
-    return institution;
   }
 
-  update(id: string, dto: UpdateInstitutionDto): Institution {
-    const position = this.institutions.findIndex(
-      (institution) => institution.id === id,
-    );
-    if (position === -1) {
-      throw new NotFoundException(`Institución con ID ${id} no encontrada`);
+  async update(id: string, dto: UpdateInstitutionDto): Promise<Institution> {
+    const institution = await this.findById(id);
+    try {
+      await this.institutionsRepository.update(institution.id, {
+        name: dto.name,
+      });
+    } catch (error) {
+      if (error instanceof QueryFailedError && isUniqueViolation(error)) {
+        throw new ConflictException(
+          `Institución con nombre ${dto.name} ya existe`,
+        );
+      }
+      throw error;
     }
-    if (
-      dto.name !== undefined &&
-      this.institutions.some(
-        (institution) => institution.name === dto.name && institution.id !== id,
-      )
-    ) {
-      throw new ConflictException(
-        `Institución con nombre ${dto.name} ya existe`,
-      );
-    }
-    const updated = { ...this.institutions[position], ...dto };
-    this.institutions[position] = updated;
-    return updated;
+    return this.findById(id);
   }
 }
+
+const isUniqueViolation = (error: QueryFailedError): boolean =>
+  (error as unknown as { code?: string }).code === '23505';
