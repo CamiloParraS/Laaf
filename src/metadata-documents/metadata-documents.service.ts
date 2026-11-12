@@ -18,7 +18,7 @@ export class MetadataDocumentsService {
   findAllByOwner(ownerId: string): Promise<DocumentMetadata[]> {
     return this.documentsRepository.find({
       where: { ownerId },
-      order: { updatedAt: 'DESC' },
+      order: { lastUpdate: 'DESC' },
     });
   }
 
@@ -40,7 +40,7 @@ export class MetadataDocumentsService {
   async publish(dto: PublishDocumentDto): Promise<DocumentMetadata> {
     const doc = await this.findById(dto.id);
     await this.documentsRepository.update(doc.id, {
-      updatedAt: new Date(),
+      lastUpdate: new Date(),
     });
     return this.findById(doc.id);
   }

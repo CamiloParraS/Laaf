@@ -7,24 +7,24 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('DocumentMetadata')
+@Entity('document_metadata')
 export class DocumentMetadata {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('uuid', { name: 'ownerId' })
+  @Column('uuid', { name: 'owner_id' })
   @Index()
   ownerId: string;
 
-  @Column('uuid', { name: 'templateId' })
+  @Column('uuid', { name: 'template_id' })
   templateId: string;
 
   @Column('text', { nullable: true })
   content?: string;
 
-  @CreateDateColumn({ type: 'timestamptz' })
-  createdAt: Date;
+  @CreateDateColumn({ type: 'timestamptz', name: 'date_clone' })
+  dateClone: Date;
 
-  @UpdateDateColumn({ type: 'timestamptz' })
-  updatedAt: Date;
+  @UpdateDateColumn({ type: 'timestamptz', name: 'last_update' })
+  lastUpdate: Date;
 }

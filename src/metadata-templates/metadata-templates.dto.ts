@@ -11,10 +11,10 @@ export class CreateMetadataTemplateDto {
 
   @IsOptional()
   @IsBoolean()
-  status?: boolean;
+  statusTemplate?: boolean;
 
   @IsUUID()
-  ownerId: string;
+  creatorId: string;
 }
 
 export class UpdateMetadataTemplateDto {
@@ -27,10 +27,10 @@ export interface MetadataTemplateResponse {
   id: string;
   name: string;
   subject: string;
-  status: boolean;
-  createdAt: string;
-  updatedAt: string;
-  ownerId: string;
+  statusTemplate: boolean;
+  dateCreation: string;
+  lastUpdate: string;
+  creatorId: string;
 }
 
 export interface MetadataTemplatePage {
