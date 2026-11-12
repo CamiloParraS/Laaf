@@ -31,8 +31,8 @@ const publicData = (user: User) => ({
   institutionId: user.institutionId,
   areaId: user.areaId,
   lastLogin: user.lastLogin,
-  createdAt: user.createdAt,
-  updatedAt: user.updatedAt,
+  dateRegister: user.dateRegister,
+  lastUpdate: user.lastUpdate,
 });
 
 @Injectable()
@@ -50,7 +50,7 @@ export class AuthService {
 
     const user = this.users.create({
       name: dto.name,
-      lastname: dto.lastname,
+      lastName: dto.lastname,
       email,
       password: hashPassword(dto.password),
       lastLogin: new Date(),

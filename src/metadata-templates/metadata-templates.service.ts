@@ -17,10 +17,10 @@ export class MetadataTemplatesService {
         id: randomUUID(),
         name,
         subject: `Plantilla de ${name}`,
-        status: true,
-        createdAt: now,
-        updatedAt: now,
-        ownerId: randomUUID(),
+        statusTemplate: true,
+        dateCreation: now,
+        lastUpdate: now,
+        creatorId: randomUUID(),
       };
     },
   );
@@ -47,10 +47,10 @@ export class MetadataTemplatesService {
       id: randomUUID(),
       name: dto.name,
       subject: dto.subject,
-      status: dto.status ?? true,
-      createdAt: now,
-      updatedAt: now,
-      ownerId: dto.ownerId,
+      statusTemplate: dto.statusTemplate ?? true,
+      dateCreation: now,
+      lastUpdate: now,
+      creatorId: dto.creatorId,
     };
     this.templates.push(template);
     return template;
@@ -59,7 +59,7 @@ export class MetadataTemplatesService {
   update(id: string, dto: UpdateMetadataTemplateDto): MetadataTemplateResponse {
     const template = this.findById(id);
     template.name = dto.name;
-    template.updatedAt = new Date().toISOString();
+    template.lastUpdate = new Date().toISOString();
     return template;
   }
 
