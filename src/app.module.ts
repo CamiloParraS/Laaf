@@ -6,6 +6,7 @@ import { EnvModule } from './env/env.module';
 import { InstitutionsModule } from './institutions/institutions.module';
 import { MetadataDocumentsModule } from './metadata-documents/metadata-documents.module';
 import { MetadataTemplatesModule } from './metadata-templates/metadata-templates.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { MetadataTemplatesModule } from './metadata-templates/metadata-templates
     DatabaseModule,
     AuthModule,
     AreasModule,
+    UsersModule,
     InstitutionsModule,
     MetadataTemplatesModule,
     MetadataDocumentsModule,
