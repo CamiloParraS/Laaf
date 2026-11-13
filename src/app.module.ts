@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { AreasModule } from './areas/areas.module';
 import { AuthModule } from './auth/auth.module';
 import { DatabaseModule } from './database/database.module';
 import { EnvModule } from './env/env.module';
@@ -11,6 +12,7 @@ import { MetadataTemplatesModule } from './metadata-templates/metadata-templates
     EnvModule,
     DatabaseModule,
     AuthModule,
+    AreasModule,
     InstitutionsModule,
     MetadataTemplatesModule,
     MetadataDocumentsModule,
