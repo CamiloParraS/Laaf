@@ -7,6 +7,7 @@ import {
   HttpCode,
   Param,
   ParseIntPipe,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -16,10 +17,8 @@ import {
   CreateMetadataTemplateDto,
   UpdateMetadataTemplateDto,
 } from './metadata-templates.dto';
-import type {
-  MetadataTemplatePage,
-  MetadataTemplateResponse,
-} from './metadata-templates.dto';
+import type { MetadataTemplatePage } from './metadata-templates.dto';
+import { TemplateMetadata } from './entities/template-metadata.entity';
 
 @Controller('metadata-templates')
 export class MetadataTemplatesController {
@@ -29,31 +28,31 @@ export class MetadataTemplatesController {
   findAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
-  ): MetadataTemplatePage {
+  ): Promise<MetadataTemplatePage> {
     return this.templates.findAll(Math.max(page, 1), Math.min(Math.max(limit, 1), 100));
   }
 
   @Get(':id')
-  findById(@Param('id') id: string): MetadataTemplateResponse {
+  findById(@Param('id', ParseUUIDPipe) id: string): Promise<TemplateMetadata> {
     return this.templates.findById(id);
   }
 
   @Post()
-  create(@Body() payload: CreateMetadataTemplateDto): MetadataTemplateResponse {
+  create(@Body() payload: CreateMetadataTemplateDto): Promise<TemplateMetadata> {
     return this.templates.create(payload);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() payload: UpdateMetadataTemplateDto,
-  ): MetadataTemplateResponse {
+  ): Promise<TemplateMetadata> {
     return this.templates.update(id, payload);
   }
 
   @Delete(':id')
   @HttpCode(204)
-  remove(@Param('id') id: string): void {
-    this.templates.remove(id);
+  remove(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
+    return this.templates.remove(id);
   }
 }
