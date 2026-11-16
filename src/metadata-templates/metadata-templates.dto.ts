@@ -1,4 +1,5 @@
 import { IsBoolean, IsOptional, IsString, IsUUID, MinLength } from 'class-validator';
+import { TemplateMetadata } from './entities/template-metadata.entity';
 
 export class CreateMetadataTemplateDto {
   @IsString()
@@ -23,18 +24,8 @@ export class UpdateMetadataTemplateDto {
   name: string;
 }
 
-export interface MetadataTemplateResponse {
-  id: string;
-  name: string;
-  subject: string;
-  statusTemplate: boolean;
-  dateCreation: string;
-  lastUpdate: string;
-  creatorId: string;
-}
-
 export interface MetadataTemplatePage {
-  data: MetadataTemplateResponse[];
+  data: TemplateMetadata[];
   page: number;
   limit: number;
   total: number;
