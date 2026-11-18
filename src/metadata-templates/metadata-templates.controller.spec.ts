@@ -8,7 +8,7 @@ describe('MetadataTemplatesController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [MetadataTemplatesController],
-      providers: [MetadataTemplatesService],
+      providers: [{ provide: MetadataTemplatesService, useValue: {} }],
     }).compile();
 
     controller = module.get<MetadataTemplatesController>(MetadataTemplatesController);

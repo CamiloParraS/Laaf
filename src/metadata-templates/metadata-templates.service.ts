@@ -1,69 +1,59 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { randomUUID } from 'node:crypto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import {
   CreateMetadataTemplateDto,
   MetadataTemplatePage,
-  MetadataTemplateResponse,
   UpdateMetadataTemplateDto,
 } from './metadata-templates.dto';
+import { TemplateMetadata } from './entities/template-metadata.entity';
 
 @Injectable()
 export class MetadataTemplatesService {
-  
-  private templates: MetadataTemplateResponse[] = ['Tesis', 'Articulo', 'Informe'].map(
-    (name) => {
-      const now = new Date().toISOString();
-      return {
-        id: randomUUID(),
-        name,
-        subject: `Plantilla de ${name}`,
-        statusTemplate: true,
-        dateCreation: now,
-        lastUpdate: now,
-        creatorId: randomUUID(),
-      };
-    },
-  );
+  constructor(
+    @InjectRepository(TemplateMetadata)
+    private readonly templatesRepository: Repository<TemplateMetadata>,
+  ) {}
 
-  findAll(page: number, limit: number): MetadataTemplatePage {
-    const start = (page - 1) * limit;
-    return {
-      data: this.templates.slice(start, start + limit),
-      page,
-      limit,
-      total: this.templates.length,
-    };
+  async findAll(page: number, limit: number): Promise<MetadataTemplatePage> {
+    const [data, total] = await this.templatesRepository.findAndCount({
+      order: { dateCreation: 'DESC' },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+    return { data, page, limit, total };
   }
 
-  findById(id: string): MetadataTemplateResponse {
-    const template = this.templates.find((t) => t.id === id);
-    if (!template) throw new NotFoundException('Metadata template not found');
-    return template;
+  async findById(id: string): Promise<TemplateMetadata> {
+    const found = await this.templatesRepository.findOne({ where: { id } });
+    if (!found) {
+      throw new NotFoundException(`Plantilla con ID ${id} no encontrada`);
+    }
+    return found;
   }
 
-  create(dto: CreateMetadataTemplateDto): MetadataTemplateResponse {
-    const now = new Date().toISOString();
-    const template: MetadataTemplateResponse = {
-      id: randomUUID(),
-      name: dto.name,
-      subject: dto.subject,
-      statusTemplate: dto.statusTemplate ?? true,
-      dateCreation: now,
-      lastUpdate: now,
-      creatorId: dto.creatorId,
-    };
-    this.templates.push(template);
-    return template;
+  create(dto: CreateMetadataTemplateDto): Promise<TemplateMetadata> {
+    return this.templatesRepository.save(
+      this.templatesRepository.create({
+        name: dto.name,
+        subject: dto.subject,
+        statusTemplate: dto.statusTemplate ?? true,
+        creatorId: dto.creatorId,
+      }),
+    );
   }
 
-  update(id: string, dto: UpdateMetadataTemplateDto): MetadataTemplateResponse {
-    const template = this.findById(id);
-    template.name = dto.name;
-    template.lastUpdate = new Date().toISOString();
-    return template;
+  async update(
+    id: string,
+    dto: UpdateMetadataTemplateDto,
+  ): Promise<TemplateMetadata> {
+    const template = await this.findById(id);
+    await this.templatesRepository.update(template.id, { name: dto.name });
+    return this.findById(id);
   }
 
-  remove(id: string): void {
-    this.templates.splice(this.templates.indexOf(this.findById(id)), 1);
+  async remove(id: string): Promise<void> {
+    const template = await this.findById(id);
+    await this.templatesRepository.delete(template.id);
   }
 }
