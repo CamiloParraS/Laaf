@@ -36,10 +36,10 @@
   ],
   "item": [
     {
-      "name": "1. Institutions",
+      "name": "Institutions",
       "item": [
         {
-          "name": "Crear institución",
+          "name": "Crear",
           "request": {
             "method": "POST",
             "header": [
@@ -66,22 +66,10 @@
                 }
               }
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 201', () => pm.response.to.have.status(201));",
-                  "pm.collectionVariables.set('institutionId', pm.response.json().id);"
-                ]
-              }
-            }
-          ]
+          }
         },
         {
-          "name": "Crear institución (nombre vacío)",
+          "name": "Crear (nombre vacío)",
           "request": {
             "method": "POST",
             "header": [
@@ -108,21 +96,10 @@
                 }
               }
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 400', () => pm.response.to.have.status(400));"
-                ]
-              }
-            }
-          ]
+          }
         },
         {
-          "name": "Listar instituciones",
+          "name": "Listar",
           "request": {
             "method": "GET",
             "header": [],
@@ -135,21 +112,10 @@
                 "institutions"
               ]
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 200', () => pm.response.to.have.status(200));"
-                ]
-              }
-            }
-          ]
+          }
         },
         {
-          "name": "Obtener institución",
+          "name": "Obtener",
           "request": {
             "method": "GET",
             "header": [],
@@ -163,21 +129,10 @@
                 "{{institutionId}}"
               ]
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 200', () => pm.response.to.have.status(200));"
-                ]
-              }
-            }
-          ]
+          }
         },
         {
-          "name": "Obtener institución (no existe)",
+          "name": "Obtener (no existe)",
           "request": {
             "method": "GET",
             "header": [],
@@ -191,21 +146,10 @@
                 "00000000-0000-4000-8000-000000000000"
               ]
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 404', () => pm.response.to.have.status(404));"
-                ]
-              }
-            }
-          ]
+          }
         },
         {
-          "name": "Actualizar institución",
+          "name": "Actualizar",
           "request": {
             "method": "PATCH",
             "header": [
@@ -233,26 +177,15 @@
                 }
               }
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 200', () => pm.response.to.have.status(200));"
-                ]
-              }
-            }
-          ]
+          }
         }
       ]
     },
     {
-      "name": "2. Area",
+      "name": "Area",
       "item": [
         {
-          "name": "Crear área",
+          "name": "Crear",
           "request": {
             "method": "POST",
             "header": [
@@ -279,22 +212,10 @@
                 }
               }
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 201', () => pm.response.to.have.status(201));",
-                  "pm.collectionVariables.set('areaId', pm.response.json().id);"
-                ]
-              }
-            }
-          ]
+          }
         },
         {
-          "name": "Listar áreas de una institución",
+          "name": "Listar por institución",
           "request": {
             "method": "GET",
             "header": [],
@@ -313,21 +234,10 @@
                 }
               ]
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 200', () => pm.response.to.have.status(200));"
-                ]
-              }
-            }
-          ]
+          }
         },
         {
-          "name": "Listar áreas (sin institution_id)",
+          "name": "Listar (sin filtro)",
           "request": {
             "method": "GET",
             "header": [],
@@ -340,21 +250,10 @@
                 "area"
               ]
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 400', () => pm.response.to.have.status(400));"
-                ]
-              }
-            }
-          ]
+          }
         },
         {
-          "name": "Actualizar área",
+          "name": "Actualizar",
           "request": {
             "method": "PATCH",
             "header": [
@@ -382,26 +281,15 @@
                 }
               }
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 200', () => pm.response.to.have.status(200));"
-                ]
-              }
-            }
-          ]
+          }
         }
       ]
     },
     {
-      "name": "3. Auth",
+      "name": "Auth",
       "item": [
         {
-          "name": "Registrar usuario",
+          "name": "Registrar",
           "request": {
             "method": "POST",
             "header": [
@@ -429,20 +317,7 @@
                 }
               }
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 201', () => pm.response.to.have.status(201));",
-                  "pm.collectionVariables.set('userEmail', pm.response.json().data.email);",
-                  "pm.collectionVariables.set('userId', pm.response.json().data.id);"
-                ]
-              }
-            }
-          ]
+          }
         },
         {
           "name": "Login",
@@ -473,21 +348,10 @@
                 }
               }
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 200', () => pm.response.to.have.status(200));"
-                ]
-              }
-            }
-          ]
+          }
         },
         {
-          "name": "Login (credenciales inválidas)",
+          "name": "Login (inválido)",
           "request": {
             "method": "POST",
             "header": [
@@ -515,26 +379,15 @@
                 }
               }
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 401', () => pm.response.to.have.status(401));"
-                ]
-              }
-            }
-          ]
+          }
         }
       ]
     },
     {
-      "name": "4. Users",
+      "name": "Users",
       "item": [
         {
-          "name": "Listar usuarios por área",
+          "name": "Listar por área",
           "request": {
             "method": "GET",
             "header": [],
@@ -553,21 +406,10 @@
                 }
               ]
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 200', () => pm.response.to.have.status(200));"
-                ]
-              }
-            }
-          ]
+          }
         },
         {
-          "name": "Listar usuarios por institución",
+          "name": "Listar por institución",
           "request": {
             "method": "GET",
             "header": [],
@@ -586,21 +428,10 @@
                 }
               ]
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 200', () => pm.response.to.have.status(200));"
-                ]
-              }
-            }
-          ]
+          }
         },
         {
-          "name": "Listar usuarios (sin filtros)",
+          "name": "Listar",
           "request": {
             "method": "GET",
             "header": [],
@@ -613,21 +444,10 @@
                 "users"
               ]
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 400', () => pm.response.to.have.status(400));"
-                ]
-              }
-            }
-          ]
+          }
         },
         {
-          "name": "Obtener usuario",
+          "name": "Obtener",
           "request": {
             "method": "GET",
             "header": [],
@@ -641,21 +461,10 @@
                 "{{userId}}"
               ]
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 200', () => pm.response.to.have.status(200));"
-                ]
-              }
-            }
-          ]
+          }
         },
         {
-          "name": "Actualizar usuario",
+          "name": "Actualizar",
           "request": {
             "method": "PATCH",
             "header": [
@@ -683,26 +492,15 @@
                 }
               }
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 200', () => pm.response.to.have.status(200));"
-                ]
-              }
-            }
-          ]
+          }
         }
       ]
     },
     {
-      "name": "5. Templates",
+      "name": "Templates",
       "item": [
         {
-          "name": "Crear plantilla",
+          "name": "Crear",
           "request": {
             "method": "POST",
             "header": [
@@ -729,22 +527,10 @@
                 }
               }
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 201', () => pm.response.to.have.status(201));",
-                  "pm.collectionVariables.set('templateId', pm.response.json().id);"
-                ]
-              }
-            }
-          ]
+          }
         },
         {
-          "name": "Listar plantillas",
+          "name": "Listar",
           "request": {
             "method": "GET",
             "header": [],
@@ -767,21 +553,10 @@
                 }
               ]
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 200', () => pm.response.to.have.status(200));"
-                ]
-              }
-            }
-          ]
+          }
         },
         {
-          "name": "Obtener plantilla",
+          "name": "Obtener",
           "request": {
             "method": "GET",
             "header": [],
@@ -795,21 +570,10 @@
                 "{{templateId}}"
               ]
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 200', () => pm.response.to.have.status(200));"
-                ]
-              }
-            }
-          ]
+          }
         },
         {
-          "name": "Actualizar plantilla",
+          "name": "Actualizar",
           "request": {
             "method": "PATCH",
             "header": [
@@ -837,21 +601,10 @@
                 }
               }
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 200', () => pm.response.to.have.status(200));"
-                ]
-              }
-            }
-          ]
+          }
         },
         {
-          "name": "Eliminar plantilla",
+          "name": "Eliminar",
           "request": {
             "method": "DELETE",
             "header": [],
@@ -865,26 +618,15 @@
                 "{{templateId}}"
               ]
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 204', () => pm.response.to.have.status(204));"
-                ]
-              }
-            }
-          ]
+          }
         }
       ]
     },
     {
-      "name": "6. Documents",
+      "name": "Documents",
       "item": [
         {
-          "name": "OPTIONS documents",
+          "name": "Opciones",
           "request": {
             "method": "OPTIONS",
             "header": [],
@@ -897,21 +639,10 @@
                 "documents"
               ]
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 200', () => pm.response.to.have.status(200));"
-                ]
-              }
-            }
-          ]
+          }
         },
         {
-          "name": "Clonar documento",
+          "name": "Clonar",
           "request": {
             "method": "POST",
             "header": [
@@ -939,22 +670,10 @@
                 }
               }
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 201', () => pm.response.to.have.status(201));",
-                  "pm.collectionVariables.set('documentId', pm.response.json().id);"
-                ]
-              }
-            }
-          ]
+          }
         },
         {
-          "name": "Listar documentos de un dueño",
+          "name": "Listar por dueño",
           "request": {
             "method": "GET",
             "header": [],
@@ -973,21 +692,10 @@
                 }
               ]
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 200', () => pm.response.to.have.status(200));"
-                ]
-              }
-            }
-          ]
+          }
         },
         {
-          "name": "Obtener documento",
+          "name": "Obtener",
           "request": {
             "method": "GET",
             "header": [],
@@ -1001,21 +709,10 @@
                 "{{documentId}}"
               ]
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 200', () => pm.response.to.have.status(200));"
-                ]
-              }
-            }
-          ]
+          }
         },
         {
-          "name": "Guardar documento",
+          "name": "Guardar",
           "request": {
             "method": "PUT",
             "header": [
@@ -1043,21 +740,10 @@
                 }
               }
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 200', () => pm.response.to.have.status(200));"
-                ]
-              }
-            }
-          ]
+          }
         },
         {
-          "name": "Publicar documento",
+          "name": "Publicar",
           "request": {
             "method": "POST",
             "header": [
@@ -1085,18 +771,7 @@
                 }
               }
             }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('status 201', () => pm.response.to.have.status(201));"
-                ]
-              }
-            }
-          ]
+          }
         }
       ]
     }
