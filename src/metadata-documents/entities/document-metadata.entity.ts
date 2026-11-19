@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { TemplateMetadata } from '../../metadata-templates/entities/template-metadata.entity';
 import type { Relation } from 'typeorm';
 import { User } from '../../auth/entities/user.entity';
 
@@ -26,6 +27,10 @@ export class DocumentMetadata {
 
   @Column('uuid', { name: 'template_id' })
   templateId: string;
+
+  @ManyToOne(() => TemplateMetadata, (template) => template.documents)
+  @JoinColumn({ name: 'template_id' })
+  template: Relation<TemplateMetadata>;
 
   @Column('text', { nullable: true })
   content?: string;

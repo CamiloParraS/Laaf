@@ -4,9 +4,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { DocumentMetadata } from '../../metadata-documents/entities/document-metadata.entity';
 import type { Relation } from 'typeorm';
 import { User } from '../../auth/entities/user.entity';
 
@@ -36,4 +38,7 @@ export class TemplateMetadata {
 
   @UpdateDateColumn({ type: 'timestamptz', name: 'last_update' })
   lastUpdate: Date;
+  @OneToMany(() => DocumentMetadata, (document) => document.template)
+  documents: Relation<DocumentMetadata[]>;
+
 }
