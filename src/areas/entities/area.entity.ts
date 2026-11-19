@@ -27,6 +27,10 @@ export class Area {
 
   @Column('uuid', { name: 'leader_id', nullable: true })
   leaderId: string | null;
+
+  @ManyToOne(() => User, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'leader_id' })
+  leader: Relation<User> | null;
   @OneToMany(() => User, (user) => user.area)
   users: Relation<User[]>;
 
