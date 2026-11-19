@@ -1,11 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import {
-  CreateMetadataTemplateDto,
-  MetadataTemplatePage,
-  UpdateMetadataTemplateDto,
-} from './metadata-templates.dto';
+import { CreateMetadataTemplateDto } from './dto/create-metadata-template.dto';
+import { MetadataTemplatePage } from './dto/metadata-template-page.dto';
+import { UpdateMetadataTemplateDto } from './dto/update-metadata-template.dto';
 import { TemplateMetadata } from './entities/template-metadata.entity';
 
 @Injectable()

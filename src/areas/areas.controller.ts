@@ -8,7 +8,8 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { CreateAreaDto, UpdateAreaDto } from './areas.dto';
+import { CreateAreaDto } from './dto/create-area.dto';
+import { UpdateAreaDto } from './dto/update-area.dto';
 import { AreasService } from './areas.service';
 import { Area } from './entities/area.entity';
 

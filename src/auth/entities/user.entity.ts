@@ -5,7 +5,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Role } from '../auth.dto';
+export enum Role {
+  TEACHER = 'TEACHER',
+  CORDINATOR = 'CORDINATOR',
+  DIRECTOR = 'DIRECTOR',
+}
 
 @Entity({ name: 'users' })
 export class User {

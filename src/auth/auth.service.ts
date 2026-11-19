@@ -7,7 +7,8 @@ import {
 import { randomBytes, scryptSync, timingSafeEqual } from 'node:crypto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { LoginDto, RegisterDto } from './auth.dto';
+import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
 import { User } from './entities/user.entity';
 
 const hashPassword = (password: string) => {

@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { AuthService } from './auth.service';
@@ -14,10 +14,10 @@ describe('AuthService', () => {
         {
           provide: getRepositoryToken(User),
           useValue: {
-            findOneBy: vi.fn(),
-            create: vi.fn(),
-            save: vi.fn(),
-            createQueryBuilder: vi.fn(),
+            findOneBy: jest.fn(),
+            create: jest.fn(),
+            save: jest.fn(),
+            createQueryBuilder: jest.fn(),
           },
         },
       ],

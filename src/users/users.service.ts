@@ -5,9 +5,10 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { QueryFailedError, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
+import { isUniqueViolation } from '../common/db-errors';
 import { User } from '../auth/entities/user.entity';
-import { UpdateUserDto } from './users.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 export interface UserFilters {
   areaId?: string;
@@ -53,7 +54,7 @@ export class UsersService {
         areaId: dto.areaId,
       });
     } catch (error) {
-      if (error instanceof QueryFailedError && isUniqueViolation(error)) {
+      if (isUniqueViolation(error)) {
         throw new ConflictException(`Email ${dto.email} ya está registrado`);
       }
       throw error;
@@ -61,6 +62,3 @@ export class UsersService {
     return this.findById(id);
   }
 }
-
-const isUniqueViolation = (error: QueryFailedError): boolean =>
-  (error as unknown as { code?: string }).code === '23505';

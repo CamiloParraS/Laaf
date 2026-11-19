@@ -13,11 +13,9 @@ import {
   Query,
 } from '@nestjs/common';
 import { MetadataTemplatesService } from './metadata-templates.service';
-import {
-  CreateMetadataTemplateDto,
-  UpdateMetadataTemplateDto,
-} from './metadata-templates.dto';
-import type { MetadataTemplatePage } from './metadata-templates.dto';
+import { CreateMetadataTemplateDto } from './dto/create-metadata-template.dto';
+import type { MetadataTemplatePage } from './dto/metadata-template-page.dto';
+import { UpdateMetadataTemplateDto } from './dto/update-metadata-template.dto';
 import { TemplateMetadata } from './entities/template-metadata.entity';
 
 @Controller('metadata-templates')
