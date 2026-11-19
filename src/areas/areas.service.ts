@@ -4,7 +4,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { QueryFailedError, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
+import { isUniqueViolation } from '../common/db-errors';
 import { CreateAreaDto } from './dto/create-area.dto';
 import { UpdateAreaDto } from './dto/update-area.dto';
 import { Area } from './entities/area.entity';
@@ -50,13 +51,10 @@ export class AreasService {
     try {
       return await this.areasRepository.save(area);
     } catch (error) {
-      if (error instanceof QueryFailedError && isUniqueViolation(error)) {
+      if (isUniqueViolation(error)) {
         throw new ConflictException(`Área con nombre ${area.name} ya existe`);
       }
       throw error;
     }
   }
 }
-
-const isUniqueViolation = (error: QueryFailedError): boolean =>
-  (error as unknown as { code?: string }).code === '23505';
