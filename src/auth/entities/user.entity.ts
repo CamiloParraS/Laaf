@@ -2,9 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import type { Relation } from 'typeorm';
+import { Institution } from '../../institutions/entities/institution.entity';
 export enum Role {
   TEACHER = 'TEACHER',
   CORDINATOR = 'CORDINATOR',
@@ -42,6 +46,10 @@ export class User {
 
   @Column({ type: 'uuid', name: 'institution_id' })
   institutionId: string;
+
+  @ManyToOne(() => Institution, (institution) => institution.users)
+  @JoinColumn({ name: 'institution_id' })
+  institution: Relation<Institution>;
 
   @Column({ type: 'uuid', name: 'area_id' })
   areaId: string;

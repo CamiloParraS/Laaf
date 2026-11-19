@@ -4,6 +4,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { User } from '../../auth/entities/user.entity';
 import type { Relation } from 'typeorm';
 import { Area } from '../../areas/entities/area.entity';
 
@@ -16,5 +17,8 @@ export class Institution {
   name: string;
   @OneToMany(() => Area, (area) => area.institution)
   areas: Relation<Area[]>;
+
+  @OneToMany(() => User, (user) => user.institution)
+  users: Relation<User[]>;
 
 }
