@@ -1,4 +1,4 @@
-import { beforeEach, vi } from 'vitest';
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { DocumentMetadata } from './entities/document-metadata.entity';
@@ -14,11 +14,11 @@ describe('MetadataDocumentsService', () => {
         {
           provide: getRepositoryToken(DocumentMetadata),
           useValue: {
-            find: vi.fn(),
-            findOne: vi.fn(),
-            create: vi.fn(),
-            save: vi.fn(),
-            update: vi.fn(),
+            find: jest.fn(),
+            findOne: jest.fn(),
+            create: jest.fn(),
+            save: jest.fn(),
+            update: jest.fn(),
           },
         },
       ],

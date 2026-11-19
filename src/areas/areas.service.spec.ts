@@ -1,4 +1,4 @@
-import { beforeEach, vi } from 'vitest';
+
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
@@ -8,14 +8,14 @@ import { Area } from './entities/area.entity';
 describe('AreasService', () => {
   let service: AreasService;
   const areas = {
-    find: vi.fn(),
-    findOne: vi.fn(),
-    create: vi.fn((v) => v),
-    save: vi.fn((v) => Promise.resolve(v)),
+    find: jest.fn(),
+    findOne: jest.fn(),
+    create: jest.fn((v) => v),
+    save: jest.fn((v) => Promise.resolve(v)),
   };
 
   beforeEach(async () => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
     const module = await Test.createTestingModule({
       providers: [
         AreasService,
