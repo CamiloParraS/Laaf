@@ -3,8 +3,10 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { User } from '../../auth/entities/user.entity';
 import type { Relation } from 'typeorm';
 import { Institution } from '../../institutions/entities/institution.entity';
 
@@ -25,4 +27,7 @@ export class Area {
 
   @Column('uuid', { name: 'leader_id', nullable: true })
   leaderId: string | null;
+  @OneToMany(() => User, (user) => user.area)
+  users: Relation<User[]>;
+
 }

@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Area } from '../../areas/entities/area.entity';
 import type { Relation } from 'typeorm';
 import { Institution } from '../../institutions/entities/institution.entity';
 export enum Role {
@@ -53,4 +54,8 @@ export class User {
 
   @Column({ type: 'uuid', name: 'area_id' })
   areaId: string;
+
+  @ManyToOne(() => Area, (area) => area.users)
+  @JoinColumn({ name: 'area_id' })
+  area: Relation<Area>;
 }
