@@ -2,9 +2,15 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { DocumentMetadata } from '../../metadata-documents/entities/document-metadata.entity';
+import type { Relation } from 'typeorm';
+import { User } from '../../auth/entities/user.entity';
 
 @Entity('template_metadata')
 export class TemplateMetadata {
@@ -23,9 +29,16 @@ export class TemplateMetadata {
   @Column('uuid', { name: 'creator_id' })
   creatorId: string;
 
+  @ManyToOne(() => User, (user) => user.templates)
+  @JoinColumn({ name: 'creator_id' })
+  creator: Relation<User>;
+
   @CreateDateColumn({ type: 'timestamptz', name: 'date_creation' })
   dateCreation: Date;
 
   @UpdateDateColumn({ type: 'timestamptz', name: 'last_update' })
   lastUpdate: Date;
+  @OneToMany(() => DocumentMetadata, (document) => document.template)
+  documents: Relation<DocumentMetadata[]>;
+
 }

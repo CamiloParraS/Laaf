@@ -2,9 +2,17 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { DocumentMetadata } from '../../metadata-documents/entities/document-metadata.entity';
+import { TemplateMetadata } from '../../metadata-templates/entities/template-metadata.entity';
+import { Area } from '../../areas/entities/area.entity';
+import type { Relation } from 'typeorm';
+import { Institution } from '../../institutions/entities/institution.entity';
 export enum Role {
   TEACHER = 'TEACHER',
   CORDINATOR = 'CORDINATOR',
@@ -43,6 +51,20 @@ export class User {
   @Column({ type: 'uuid', name: 'institution_id' })
   institutionId: string;
 
+  @ManyToOne(() => Institution, (institution) => institution.users)
+  @JoinColumn({ name: 'institution_id' })
+  institution: Relation<Institution>;
+
   @Column({ type: 'uuid', name: 'area_id' })
   areaId: string;
+
+  @ManyToOne(() => Area, (area) => area.users)
+  @JoinColumn({ name: 'area_id' })
+  area: Relation<Area>;
+  @OneToMany(() => TemplateMetadata, (template) => template.creator)
+  templates: Relation<TemplateMetadata[]>;
+
+  @OneToMany(() => DocumentMetadata, (document) => document.owner)
+  documents: Relation<DocumentMetadata[]>;
+
 }
