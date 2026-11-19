@@ -2,9 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import type { Relation } from 'typeorm';
+import { User } from '../../auth/entities/user.entity';
 
 @Entity('template_metadata')
 export class TemplateMetadata {
@@ -22,6 +26,10 @@ export class TemplateMetadata {
 
   @Column('uuid', { name: 'creator_id' })
   creatorId: string;
+
+  @ManyToOne(() => User, (user) => user.templates)
+  @JoinColumn({ name: 'creator_id' })
+  creator: Relation<User>;
 
   @CreateDateColumn({ type: 'timestamptz', name: 'date_creation' })
   dateCreation: Date;

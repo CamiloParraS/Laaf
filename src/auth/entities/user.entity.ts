@@ -4,9 +4,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { TemplateMetadata } from '../../metadata-templates/entities/template-metadata.entity';
 import { Area } from '../../areas/entities/area.entity';
 import type { Relation } from 'typeorm';
 import { Institution } from '../../institutions/entities/institution.entity';
@@ -58,4 +60,7 @@ export class User {
   @ManyToOne(() => Area, (area) => area.users)
   @JoinColumn({ name: 'area_id' })
   area: Relation<Area>;
+  @OneToMany(() => TemplateMetadata, (template) => template.creator)
+  templates: Relation<TemplateMetadata[]>;
+
 }
