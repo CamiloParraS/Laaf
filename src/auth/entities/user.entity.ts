@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { DocumentMetadata } from '../../metadata-documents/entities/document-metadata.entity';
 import { TemplateMetadata } from '../../metadata-templates/entities/template-metadata.entity';
 import { Area } from '../../areas/entities/area.entity';
 import type { Relation } from 'typeorm';
@@ -62,5 +63,8 @@ export class User {
   area: Relation<Area>;
   @OneToMany(() => TemplateMetadata, (template) => template.creator)
   templates: Relation<TemplateMetadata[]>;
+
+  @OneToMany(() => DocumentMetadata, (document) => document.owner)
+  documents: Relation<DocumentMetadata[]>;
 
 }
