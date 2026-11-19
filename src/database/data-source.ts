@@ -1,6 +1,13 @@
-// CLI entry for migrations: npm run migration:run
 import 'dotenv/config';
+import { join } from 'path';
 import { DataSource } from 'typeorm';
-import { dbOptions } from './database.config';
 
-export default new DataSource(dbOptions((key) => process.env[key] as string));
+export default new DataSource({
+  type: 'postgres',
+  host: process.env.POSTGRES_HOST,
+  port: Number(process.env.POSTGRES_PORT),
+  username: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  database: process.env.POSTGRES_DB,
+  migrations: [join(__dirname, 'migrations', '*.{ts,js}')],
+});
