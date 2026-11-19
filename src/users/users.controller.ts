@@ -8,7 +8,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { User } from '../auth/entities/user.entity';
-import { UpdateUserDto } from './users.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
 
 @Controller('users')

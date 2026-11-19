@@ -6,21 +6,7 @@ import {
   IsUUID,
   MinLength,
 } from 'class-validator';
-
-export enum Role {
-  TEACHER = 'TEACHER',
-  CORDINATOR = 'CORDINATOR',
-  DIRECTOR = 'DIRECTOR',
-}
-
-export class LoginDto {
-  @IsEmail()
-  email: string;
-
-  @IsString()
-  @MinLength(8)
-  password: string;
-}
+import { Role } from '../entities/user.entity';
 
 export class RegisterDto {
   @IsString()

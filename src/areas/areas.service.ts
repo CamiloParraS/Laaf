@@ -5,7 +5,8 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { QueryFailedError, Repository } from 'typeorm';
-import { CreateAreaDto, UpdateAreaDto } from './areas.dto';
+import { CreateAreaDto } from './dto/create-area.dto';
+import { UpdateAreaDto } from './dto/update-area.dto';
 import { Area } from './entities/area.entity';
 
 @Injectable()

@@ -7,7 +7,8 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { CreateInstitutionDto, UpdateInstitutionDto } from './institution.dto';
+import { CreateInstitutionDto } from './dto/create-institution.dto';
+import { UpdateInstitutionDto } from './dto/update-institution.dto';
 import { Institution } from './entities/institution.entity';
 import { InstitutionsService } from './institutions.service';
 

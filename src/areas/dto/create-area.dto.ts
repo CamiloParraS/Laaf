@@ -12,14 +12,3 @@ export class CreateAreaDto {
   @IsUUID()
   leaderId?: string;
 }
-
-export class UpdateAreaDto {
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  name?: string;
-
-  @IsOptional()
-  @IsUUID()
-  leaderId?: string;
-}

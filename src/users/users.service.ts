@@ -7,7 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { QueryFailedError, Repository } from 'typeorm';
 import { User } from '../auth/entities/user.entity';
-import { UpdateUserDto } from './users.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 export interface UserFilters {
   areaId?: string;

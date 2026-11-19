@@ -5,7 +5,8 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { QueryFailedError, Repository } from 'typeorm';
-import { CreateInstitutionDto, UpdateInstitutionDto } from './institution.dto';
+import { CreateInstitutionDto } from './dto/create-institution.dto';
+import { UpdateInstitutionDto } from './dto/update-institution.dto';
 import { Institution } from './entities/institution.entity';
 
 @Injectable()

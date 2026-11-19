@@ -9,11 +9,9 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import {
-  CloneDocumentDto,
-  PublishDocumentDto,
-  SaveDocumentDto,
-} from './metadata-documents.dto';
+import { CloneDocumentDto } from './dto/clone-document.dto';
+import { PublishDocumentDto } from './dto/publish-document.dto';
+import { SaveDocumentDto } from './dto/save-document.dto';
 import { DocumentMetadata } from './entities/document-metadata.entity';
 import { MetadataDocumentsService } from './metadata-documents.service';
 
